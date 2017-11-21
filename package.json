@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/node-mongo-rest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "rest mongo stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-rest",
