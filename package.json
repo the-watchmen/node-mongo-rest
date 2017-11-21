@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/mongo-rest",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "rest mongo stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-rest",
@@ -8,10 +8,8 @@
   "scripts": {
     "ava": "cross-env NODE_ENV=auto ava -s test/ava",
     "ava-debug": "cross-env DEBUG=test:*,lib:* NODE_ENV=auto ava -s",
-    "cuke":
-      "cross-env NODE_ENV=auto DEBUG=test:*,lib:* cucumber-js --compiler=js:babel-polyfill --compiler=js:babel-core/register test/cuke",
-    "cuke-feature":
-      "cross-env DEBUG=test:*,lib:* NODE_ENV=auto cucumber-js --compiler=js:babel-polyfill --compiler=js:babel-core/register",
+    "cuke": "cross-env NODE_ENV=auto DEBUG=test:*,lib:* cucumber-js --compiler=js:babel-polyfill --compiler=js:babel-core/register test/cuke",
+    "cuke-feature": "cross-env DEBUG=test:*,lib:* NODE_ENV=auto cucumber-js --compiler=js:babel-polyfill --compiler=js:babel-core/register",
     "pretest": "xo",
     "test": "npm run ava && npm run cuke",
     "prebuild": "npm run test",
@@ -60,7 +58,10 @@
   },
   "ava": {
     "babel": "inherit",
-    "require": ["babel-register", "babel-polyfill"]
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ]
   },
   "publishConfig": {
     "access": "public"
