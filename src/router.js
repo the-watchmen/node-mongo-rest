@@ -3,7 +3,7 @@ import debug from 'debug'
 import _ from 'lodash'
 import {parseBoolean} from '@watchmen/helpr'
 import {getData, getName, isIdField, constants, xformQuery} from '@watchmen/mongo-data'
-import {dbgreq} from './express-helper'
+import {dbgreq} from './helper'
 import {operatorMatcher} from './mongo-xform-query'
 
 export default function(opts) {

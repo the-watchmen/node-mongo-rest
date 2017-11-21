@@ -1,5 +1,5 @@
 import test from 'ava'
-import {combine} from '../../src/express-helper'
+import {combine} from '../../src/helper'
 
 test('combine', t => {
   const result = combine({
