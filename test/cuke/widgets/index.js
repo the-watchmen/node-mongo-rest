@@ -1,4 +1,4 @@
-import getRouter from '../../../src'
+import {getRouter} from '../../../src'
 import meta from './meta'
 
 export default getRouter(meta)
