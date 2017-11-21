@@ -140,9 +140,9 @@
     lodash "^4.17.4"
     mongodb "^2.2.21"
 
-"@watchmen/mongo-data@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@watchmen/mongo-data/-/mongo-data-1.0.2.tgz#5c67be20eb06aee50b75cafb7c7e072b8c3f7727"
+"@watchmen/mongo-data@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@watchmen/mongo-data/-/mongo-data-1.0.3.tgz#253b2af78ccb488220fc14f7d3de0b27fc820e14"
   dependencies:
     "@watchmen/helpr" "^1.0.3"
     "@watchmen/mongo-helpr" "^0.9.2"
