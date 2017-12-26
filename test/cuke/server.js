@@ -25,7 +25,18 @@ export default (function() {
     next()
   })
 
-  app.use(jwt({secret: config.get('listener.secret'), credentialsRequired: false}))
+  app.use(
+    jwt({secret: config.get('listener.secret'), credentialsRequired: false}),
+    (req, res, next) => {
+      const {user} = req
+      if (user) {
+        const _user = {_id: user.userId, name: user.userName}
+        dbg('pre-user=%o, post-user=%o', req.user, _user)
+        req.user = _user
+      }
+      next()
+    }
+  )
 
   app.get('/', (req, res) => {
     dbg('req.user=%o', req.user)

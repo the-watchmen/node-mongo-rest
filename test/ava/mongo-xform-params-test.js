@@ -33,7 +33,7 @@ test('oidMatcher', t => {
       value,
       match
     }),
-    {[key]: oid(value)}
+    {[key]: oid({value})}
   )
 })
 

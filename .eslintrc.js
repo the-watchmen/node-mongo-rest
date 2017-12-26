@@ -1,11 +1,16 @@
 module.exports = {
   extends: ['eslint:recommended', 'prettier'],
   env: {
-    es6: true
+    es6: true,
+    node: true
   },
+parserOptions: {
+  sourceType: 'module',
+  ecmaVersion: 2017,
   ecmaFeatures: {
-    modules: true
-  },
+    experimentalObjectRestSpread: true
+  }
+},
   plugins: ['prettier'],
   rules: {
     'unicorn/no-abusive-eslint-disable': 'off',

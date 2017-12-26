@@ -35,7 +35,7 @@ export const oidMatcher = {
     return isIdField(key)
   },
   xform: ({result, key, value}) => {
-    result[key] = oid(value)
+    result[key] = oid({value})
     return result
   }
 }
