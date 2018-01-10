@@ -1,12 +1,12 @@
 import assert from 'assert'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import _ from 'lodash'
 import {parseParam, oid, pushOrs, ensureAnd} from '@watchmen/mongo-helpr'
 import {parseValue} from '@watchmen/helpr'
 import {isIdField} from '@watchmen/mongo-data'
 import geocode from '@watchmen/geocodr'
 
-const dbg = debug('lib:mongo-rest:mongo-xform-query')
+const dbg = debug(__filename)
 
 const orRegex = /^_or\((.+)\)$/
 const operatorRegex = /^_(.+):(.+)$/

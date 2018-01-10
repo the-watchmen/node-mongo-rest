@@ -1,10 +1,10 @@
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import {defineSupportCode} from 'cucumber'
 import {initState} from '@watchmen/test-helpr'
 import {getDb} from '@watchmen/mongo-helpr'
 import {initDb} from '@watchmen/mongo-test-helpr'
 
-const dbg = debug('test:support:hooks')
+const dbg = debug(__filename)
 dbg('loaded hooks')
 
 // eslint-disable-next-line no-unused-expressions

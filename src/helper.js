@@ -1,9 +1,9 @@
 import _ from 'lodash'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import {constants} from '@watchmen/mongo-data'
 import {stringify, VALIDATION_ERROR, UNIQUENESS_ERROR} from '@watchmen/helpr'
 
-const dbg = debug('lib:mongo-rest:helper')
+const dbg = debug(__filename)
 const mongoError = 'MongoError'
 
 export function dbgreq(dbg, req) {

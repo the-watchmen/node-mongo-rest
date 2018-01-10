@@ -1,5 +1,5 @@
 import express from 'express'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import _ from 'lodash'
 import {parseBoolean} from '@watchmen/helpr'
 import {getData, getName, isIdField, constants, xformQuery} from '@watchmen/mongo-data'
@@ -7,7 +7,7 @@ import {dbgreq} from './helper'
 import {operatorMatcher} from './mongo-xform-query'
 
 export default function(opts) {
-  const dbg = debug(`lib:mongo-rest:get-router(${getName(opts)})`)
+  const dbg = debug(__filename, {tag: getName(opts)})
   const router = opts.router || express.Router()
   const data = getData(opts)
 
