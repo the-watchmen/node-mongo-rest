@@ -126,7 +126,7 @@ async function getId({id, opts}) {
 }
 
 function getUserContext(req) {
-  return req.user ? {user: req.user} : null
+  return req.user ? {user: req.user} : {}
 }
 
 function getContext(req) {
