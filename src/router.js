@@ -1,7 +1,7 @@
 import express from 'express'
 import debug from '@watchmen/debug'
 import _ from 'lodash'
-import {parseBoolean} from '@watchmen/helpr'
+import {parseBoolean, deepClean} from '@watchmen/helpr'
 import {getData, getName, xformQuery, constants} from '@watchmen/mongo-data'
 import {dbgreq} from './helper'
 import {operatorMatcher} from './mongo-xform-query'
@@ -118,7 +118,7 @@ async function getId({id, context, opts}) {
 }
 
 function getUserContext(req) {
-  return req.user ? {user: req.user} : {}
+  return deepClean({user: req.user, standardUser: req.standardUser})
 }
 
 function getContext(req) {
