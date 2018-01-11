@@ -2,14 +2,14 @@
 import 'babel-polyfill'
 import express from 'express'
 import bodyParser from 'body-parser'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import config from 'config'
 import jwt from 'express-jwt'
 import {errorHandler} from '../../src/helper'
 import widgetRouter from './widgets'
 
 export default (function() {
-  const dbg = debug('test:index')
+  const dbg = debug(__filename)
   const app = express()
 
   app.use(bodyParser.json())
@@ -32,7 +32,7 @@ export default (function() {
       if (user) {
         const _user = {_id: user.userId, name: user.userName}
         dbg('pre-user=%o, post-user=%o', req.user, _user)
-        req.user = _user
+        req.standardUser = _user
       }
       next()
     }

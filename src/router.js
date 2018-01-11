@@ -1,13 +1,13 @@
 import express from 'express'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import _ from 'lodash'
-import {parseBoolean} from '@watchmen/helpr'
-import {getData, getName, isIdField, constants, xformQuery} from '@watchmen/mongo-data'
+import {parseBoolean, deepClean} from '@watchmen/helpr'
+import {getData, getName, xformQuery, constants} from '@watchmen/mongo-data'
 import {dbgreq} from './helper'
 import {operatorMatcher} from './mongo-xform-query'
 
 export default function(opts) {
-  const dbg = debug(`lib:mongo-rest:get-router(${getName(opts)})`)
+  const dbg = debug(__filename, {tag: getName(opts)})
   const router = opts.router || express.Router()
   const data = getData(opts)
 
@@ -60,7 +60,7 @@ export default function(opts) {
   router.get('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.get(id)
       result ? res.send(result) : res.status(404).send('not found')
     } catch (err) {
@@ -82,7 +82,7 @@ export default function(opts) {
   router.put('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.update({id, data: req.body, context: getContext(req)})
       result ? res.status(204).send('updated') : res.status(404).send('not found')
     } catch (err) {
@@ -93,7 +93,7 @@ export default function(opts) {
   router.delete('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.delete({id, context: getContext(req)})
       result ? res.status(204).send('deleted') : res.status(404).send('not found')
     } catch (err) {
@@ -107,26 +107,18 @@ export default function(opts) {
 export async function getQuery({query, opts = {}}) {
   return xformQuery(query, {
     ...opts,
-    xforms: {
-      ...opts.xforms
-    },
     omitKeys: _.union(opts.omitKeys, ['includeCount']),
-    blackList: _.union(opts.blackList, [
-      ({key}) => isIdField(key),
-      ({key}) => key.endsWith('.extension')
-    ]),
     matchers: [...(opts.matchers || []), operatorMatcher]
   })
 }
 
-async function getId({id, opts}) {
+async function getId({id, context, opts}) {
   const query = await getQuery({query: {[constants.ID_FIELD]: id}, opts})
-  const _id = query[constants.ID_FIELD]
-  return _id
+  return opts.idQueryHook ? await opts.idQueryHook({query, context}) : query
 }
 
 function getUserContext(req) {
-  return req.user ? {user: req.user} : null
+  return deepClean({user: req.user, standardUser: req.standardUser})
 }
 
 function getContext(req) {

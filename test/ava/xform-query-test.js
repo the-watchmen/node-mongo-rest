@@ -1,10 +1,10 @@
 import test from 'ava'
-import debug from 'debug'
+import debug from '@watchmen/debug'
 import {stringify} from '@watchmen/helpr'
 import {xformQuery} from '@watchmen/mongo-data'
 import {orMatcher} from '../../src/mongo-xform-query'
 
-const dbg = debug('test:xform-params')
+const dbg = debug(__filename)
 
 test('xformQuery: or', async t => {
   const result = await xformQuery(
