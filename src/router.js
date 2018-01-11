@@ -2,7 +2,7 @@ import express from 'express'
 import debug from '@watchmen/debug'
 import _ from 'lodash'
 import {parseBoolean} from '@watchmen/helpr'
-import {getData, getName, isIdField, constants, xformQuery} from '@watchmen/mongo-data'
+import {getData, getName, xformQuery, constants} from '@watchmen/mongo-data'
 import {dbgreq} from './helper'
 import {operatorMatcher} from './mongo-xform-query'
 
@@ -107,14 +107,7 @@ export default function(opts) {
 export async function getQuery({query, opts = {}}) {
   return xformQuery(query, {
     ...opts,
-    xforms: {
-      ...opts.xforms
-    },
     omitKeys: _.union(opts.omitKeys, ['includeCount']),
-    blackList: _.union(opts.blackList, [
-      ({key}) => isIdField(key),
-      ({key}) => key.endsWith('.extension')
-    ]),
     matchers: [...(opts.matchers || []), operatorMatcher]
   })
 }

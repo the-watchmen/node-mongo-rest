@@ -1,5 +1,6 @@
 import test from 'ava'
 import {nominatim as geoProvider} from '@watchmen/geocodr'
+import {isIdField} from '@watchmen/mongo-data'
 import {getQuery} from '../../src/router'
 import {getNearAddressMatcher} from '../../src/mongo-xform-query'
 
@@ -13,7 +14,7 @@ test('getQuery', async t => {
       'identifiers.extension': '1',
       id: '1'
     },
-    opts: {matchers: [getNearAddressMatcher({geoProvider})]}
+    opts: {matchers: [getNearAddressMatcher({geoProvider})], blackList: [({key}) => isIdField(key)]}
   })
   t.truthy(result)
   t.is(result.nearAddress, undefined)
@@ -22,6 +23,6 @@ test('getQuery', async t => {
   t.is(result.includeCount, undefined)
   t.is(result._id, '1')
   t.is(result['source._id'], '1')
-  t.is(result['identifiers.extension'], '1')
+  t.is(result['identifiers.extension'], 1)
   t.is(result.id, 1)
 })
