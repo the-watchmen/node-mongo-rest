@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import debug from '@watchmen/debug'
 import {constants} from '@watchmen/mongo-data'
-import {stringify, VALIDATION_ERROR, UNIQUENESS_ERROR} from '@watchmen/helpr'
+import {stringify, VALIDATION_ERROR, UNIQUENESS_ERROR, getRequired} from '@watchmen/helpr'
 
 const dbg = debug(__filename)
 const mongoError = 'MongoError'
@@ -53,4 +53,16 @@ export function errorHandler(err, req, res, next) {
     name: err.name,
     message: err.message
   })
+}
+
+// jwt user -> normalized/standard user to pass into mongo
+export function getStandardUser({user: data}) {
+  return {
+    _id: getRequired({data, field: 'preferred_username'}),
+    name: {
+      first: getRequired({data, field: 'given_name'}),
+      last: getRequired({data, field: 'family_name'})
+    },
+    email: getRequired({data, field: 'email'})
+  }
 }

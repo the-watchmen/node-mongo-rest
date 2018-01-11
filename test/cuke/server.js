@@ -32,7 +32,7 @@ export default (function() {
       if (user) {
         const _user = {_id: user.userId, name: user.userName}
         dbg('pre-user=%o, post-user=%o', req.user, _user)
-        req.user = _user
+        req.standardUser = _user
       }
       next()
     }
