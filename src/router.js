@@ -60,7 +60,7 @@ export default function(opts) {
   router.get('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.get(id)
       result ? res.send(result) : res.status(404).send('not found')
     } catch (err) {
@@ -82,7 +82,7 @@ export default function(opts) {
   router.put('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.update({id, data: req.body, context: getContext(req)})
       result ? res.status(204).send('updated') : res.status(404).send('not found')
     } catch (err) {
@@ -93,7 +93,7 @@ export default function(opts) {
   router.delete('/:id', async (req, res, next) => {
     try {
       dbgreq(dbg, req)
-      const id = await getId({id: req.params.id, opts})
+      const id = await getId({id: req.params.id, context: getContext(req), opts})
       const result = await data.delete({id, context: getContext(req)})
       result ? res.status(204).send('deleted') : res.status(404).send('not found')
     } catch (err) {
@@ -119,10 +119,9 @@ export async function getQuery({query, opts = {}}) {
   })
 }
 
-async function getId({id, opts}) {
+async function getId({id, context, opts}) {
   const query = await getQuery({query: {[constants.ID_FIELD]: id}, opts})
-  const _id = query[constants.ID_FIELD]
-  return _id
+  return opts.idQueryHook ? await opts.idQueryHook({query, context}) : query
 }
 
 function getUserContext(req) {
