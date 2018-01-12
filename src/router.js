@@ -118,7 +118,7 @@ async function getId({id, context, opts}) {
 }
 
 function getUserContext(req) {
-  return deepClean({user: req.user, standardUser: req.standardUser})
+  return deepClean({user: req.user, standardUser: req.standardUser}) || {}
 }
 
 function getContext(req) {

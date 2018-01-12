@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/mongo-rest",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "rest mongo stuff",
   "main": "dist/index.js",
   "repository": "the-watchmen/node-mongo-rest",
@@ -17,7 +17,7 @@
     "prepare": "install-self-peers -- --ignore-scripts"
   },
   "dependencies": {
-    "@watchmen/debug": "1.1.0",
+    "@watchmen/debug": "1.1.1",
     "@watchmen/geocodr": "1.1.9",
     "@watchmen/helpr": "2.3.1",
     "@watchmen/mongo-helpr": "1.1.0",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@team-griffin/install-self-peers": ">=1",
-    "@watchmen/cuke-helpr": "3.1.6",
+    "@watchmen/cuke-helpr": "3.2.0",
     "@watchmen/mongo-cuke-helpr": "0.3.7",
     "@watchmen/mongo-test-helpr": "1.0.0",
     "@watchmen/test-helpr": "0.3.4",
