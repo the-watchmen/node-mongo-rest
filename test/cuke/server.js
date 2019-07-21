@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-unassigned-import
-import 'babel-polyfill'
+import '@babel/polyfill'
 import express from 'express'
 import bodyParser from 'body-parser'
 import debug from '@watchmen/debug'
@@ -9,46 +8,47 @@ import {errorHandler} from '../../src/helper'
 import widgetRouter from './widgets'
 
 export default (function() {
-  const dbg = debug(__filename)
-  const app = express()
+	const dbg = debug(__filename)
+	const app = express()
 
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({extended: false}))
+	app.use(bodyParser.json())
+	app.use(bodyParser.urlencoded({extended: false}))
 
-  process.on('unhandledRejection', err => {
-    dbg('unhandled-rejection: %o', err)
-    process.exit(1)
-  })
+	process.on('unhandledRejection', err => {
+		dbg('unhandled-rejection: %o', err)
+		process.exit(1)
+	})
 
-  app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy', 'default-src "none"; connect-src "self" https:;')
-    next()
-  })
+	app.use((req, res, next) => {
+		res.setHeader('Content-Security-Policy', 'default-src "none"; connect-src "self" https:;')
+		next()
+	})
 
-  app.use(
-    jwt({secret: config.get('listener.secret'), credentialsRequired: false}),
-    (req, res, next) => {
-      const {user} = req
-      if (user) {
-        const _user = {_id: user.userId, name: user.userName}
-        dbg('pre-user=%o, post-user=%o', req.user, _user)
-        req.standardUser = _user
-      }
-      next()
-    }
-  )
+	app.use(
+		jwt({secret: config.get('listener.secret'), credentialsRequired: false}),
+		(req, res, next) => {
+			const {user} = req
+			if (user) {
+				const _user = {_id: user.userId, name: user.userName}
+				dbg('pre-user=%o, post-user=%o', req.user, _user)
+				req.standardUser = _user
+			}
 
-  app.get('/', (req, res) => {
-    dbg('req.user=%o', req.user)
-    res.send('api home...')
-  })
+			next()
+		}
+	)
 
-  app.use('/widgets', widgetRouter)
+	app.get('/', (req, res) => {
+		dbg('req.user=%o', req.user)
+		res.send('api home...')
+	})
 
-  app.use(errorHandler)
+	app.use('/widgets', widgetRouter)
 
-  const port = config.get('listener.port')
-  app.listen(port, () => {
-    dbg('listening on port=%o', port)
-  })
+	app.use(errorHandler)
+
+	const port = config.get('listener.port')
+	app.listen(port, () => {
+		dbg('listening on port=%o', port)
+	})
 })()

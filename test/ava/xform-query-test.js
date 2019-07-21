@@ -7,37 +7,37 @@ import {orMatcher} from '../../src/mongo-xform-query'
 const dbg = debug(__filename)
 
 test('xformQuery: or', async t => {
-  const result = await xformQuery(
-    {
-      '_or(foo, bar)': 'baz'
-    },
-    {
-      matchers: [orMatcher]
-    }
-  )
-  dbg('xform-query: or: result=%s', stringify(result))
-  t.deepEqual(result, {
-    $or: [{foo: 'baz'}, {bar: 'baz'}]
-  })
+	const result = await xformQuery(
+		{
+			'_or(foo, bar)': 'baz'
+		},
+		{
+			matchers: [orMatcher]
+		}
+	)
+	dbg('xform-query: or: result=%s', stringify(result))
+	t.deepEqual(result, {
+		$or: [{foo: 'baz'}, {bar: 'baz'}]
+	})
 })
 
 test('xformQuery: or multiple', async t => {
-  const result = await xformQuery(
-    {
-      '_or(foo, bar)': 'baz',
-      '_or(bing, bang)': 'boom'
-    },
-    {
-      matchers: [orMatcher]
-    }
-  )
-  dbg('xform-query: or: result=%s', stringify(result))
-  t.deepEqual(result, {
-    $or: [{foo: 'baz'}, {bar: 'baz'}],
-    $and: [
-      {
-        $or: [{bing: 'boom'}, {bang: 'boom'}]
-      }
-    ]
-  })
+	const result = await xformQuery(
+		{
+			'_or(foo, bar)': 'baz',
+			'_or(bing, bang)': 'boom'
+		},
+		{
+			matchers: [orMatcher]
+		}
+	)
+	dbg('xform-query: or: result=%s', stringify(result))
+	t.deepEqual(result, {
+		$or: [{foo: 'baz'}, {bar: 'baz'}],
+		$and: [
+			{
+				$or: [{bing: 'boom'}, {bang: 'boom'}]
+			}
+		]
+	})
 })
