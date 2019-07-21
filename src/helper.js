@@ -7,62 +7,62 @@ const dbg = debug(__filename)
 const mongoError = 'MongoError'
 
 export function dbgreq(dbg, req) {
-  dbg(
-    '[%s]%s: params=%o, query=%o, body=%o, user=%o',
-    req.method,
-    req.path,
-    req.params,
-    req.query,
-    req.body,
-    req.user
-  )
+	dbg(
+		'[%s]%s: params=%o, query=%o, body=%o, user=%o',
+		req.method,
+		req.path,
+		req.params,
+		req.query,
+		req.body,
+		req.user
+	)
 }
 
 export function combine(req) {
-  const params = _.transform(req.params, (result, value, key) => {
-    const _key = key === constants.ID_FIELD ? key : _.replace(key, '_', '.')
-    return (result[_key] = value) // eslint-disable-line no-return-assign
-  })
+	const params = _.transform(req.params, (result, value, key) => {
+		const _key = key === constants.ID_FIELD ? key : _.replace(key, '_', '.')
+		return (result[_key] = value) // eslint-disable-line no-return-assign
+	})
 
-  return {
-    ...req.query,
-    ...params
-  }
+	return {
+		...req.query,
+		...params
+	}
 }
 
 export function forward({req, res, next, router, id}) {
-  req.url = id ? `/${id}` : '/'
-  req.query = combine(req)
-  router(req, res, next)
+	req.url = id ? `/${id}` : '/'
+	req.query = combine(req)
+	router(req, res, next)
 }
 
 // eslint-disable-next-line no-unused-vars
 export function errorHandler(err, req, res, next) {
-  dbg('default error handler: err:\n%s', stringify(err))
-  dbg('default error handler: stack:\n%s', err.stack)
+	dbg('default error handler: err:\n%s', stringify(err))
+	dbg('default error handler: stack:\n%s', err.stack)
 
-  if (err.name === VALIDATION_ERROR || (err.name === mongoError && err.code === 121)) {
-    res.status(422)
-  } else if (err.name === UNIQUENESS_ERROR || (err.name === mongoError && err.code === 11000)) {
-    res.status(409)
-  } else {
-    res.status(500)
-  }
+	if (err.name === VALIDATION_ERROR || (err.name === mongoError && err.code === 121)) {
+		res.status(422)
+	} else if (err.name === UNIQUENESS_ERROR || (err.name === mongoError && err.code === 11000)) {
+		res.status(409)
+	} else {
+		res.status(500)
+	}
 
-  res.send({
-    name: err.name,
-    message: err.message
-  })
+	res.send({
+		name: err.name,
+		message: err.message
+	})
 }
 
 // jwt user -> normalized/standard user to pass into mongo
 export function getStandardUser({user: data}) {
-  return {
-    _id: getRequired({data, field: 'preferred_username'}),
-    name: {
-      first: getRequired({data, field: 'given_name'}),
-      last: getRequired({data, field: 'family_name'})
-    },
-    email: getRequired({data, field: 'email'})
-  }
+	return {
+		_id: getRequired({data, field: 'preferred_username'}),
+		name: {
+			first: getRequired({data, field: 'given_name'}),
+			last: getRequired({data, field: 'family_name'})
+		},
+		email: getRequired({data, field: 'email'})
+	}
 }

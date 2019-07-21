@@ -1,6 +1,6 @@
 module.exports = {
-  mongo: {
-    db: 'rest-auto',
-    poolSize: 5
-  }
+	mongo: {
+		db: 'rest-auto',
+		poolSize: 5
+	}
 }
